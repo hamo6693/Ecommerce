@@ -1,83 +1,89 @@
 //
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+//معلومات المستخدم
+const initialState = {
+  isAuthenticated: false,
+  isLoading: true,
+  user: null,
+};
 
-    //معلومات المستخدم
-    const initialState = {
-        isAuthenticated: false,
-        isLoading: true,
-        user: null,
-      };
-      
-      export const registerUser = createAsyncThunk(
-        "/register",
-      
-        async (formData) => {
-          const response = await axios.post(
-            "http://localhost:3000/register",
-            formData,
-            {
-              //
-              withCredentials: true,
-            }
-          );
-      
-          return response.data;
-        }
-      );
+export const registerUser = createAsyncThunk(
+  "/register",
 
+  async (formData) => {
+    const response = await axios.post(
+      "http://localhost:3000/register",
+      formData,
+      {
+        //
+        withCredentials: true,
+      }
+    );
 
-      export const loginUser = createAsyncThunk(
-        "/login",
-      
-        async (formData) => {
-          const response = await axios.post(
-            "http://localhost:3000/login",
-            formData,
-            {
-              //
-              withCredentials: true,
-            }
-          );
-      
-          return response.data;
-        }
-      );
+    return response.data;
+  }
+);
 
-      export const checkAuth = createAsyncThunk(
-        "/check-auth",
-      
-        async () => {
-          const response = await axios.get(
-            "http://localhost:3000/check-auth",
-           
-            {
-              //
-              withCredentials: true,
-              headers: {
-                "Cache-Control":
-                  "no-store, no-cache, must-revalidate, proxy-revalidate",
-              },
-            }
-          );
-      
-          return response.data;
-          
-        }
-      );
+export const loginUser = createAsyncThunk(
+  "/login",
 
+  async (formData) => {
+    const response = await axios.post("http://localhost:3000/login", formData, {
+      //
+      withCredentials: true,
+    });
 
+    return response.data;
+  }
+);
 
+export const checkAuth = createAsyncThunk(
+  "/check-auth",
+
+  async () => {
+    const response = await axios.get(
+      "http://localhost:3000/check-auth",
+
+      {
+        //
+        withCredentials: true,
+        headers: {
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
+      }
+    );
+
+    return response.data;
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  "/logout",
+
+  async () => {
+    const response = await axios.post(
+      "http://localhost:3000/logout",{},
+
+      {
+        withCredentials: true,
+      }
+    );
+
+    return response.data;
+  }
+);
 
 const authSlice = createSlice({
-    name:"auth",
-    initialState,
-    reducers: {
-        setUser: () => {},
-        
-      },
-      extraReducers:(builder) =>{ builder
+  name: "auth",
+  initialState,
+  reducers: {
+    setUser: () => {},
+  },
+  extraReducers: (builder) => {
+    builder
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
       })
@@ -92,15 +98,12 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       })
 
-
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-
-        
         state.isLoading = false;
-        state.user =  action.payload.success ? action.payload.user : null;
+        state.user = action.payload.success ? action.payload.user : null;
         state.isAuthenticated = action.payload.success;
       })
       .addCase(loginUser.rejected, (state) => {
@@ -114,11 +117,10 @@ const authSlice = createSlice({
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         console.log(action);
-        
+
         state.isLoading = false;
         state.user = action.payload.success ? action.payload.user : null;
         console.log(action.payload.user.role);
-        
         state.isAuthenticated = action.payload.success;
       })
       .addCase(checkAuth.rejected, (state) => {
@@ -126,10 +128,25 @@ const authSlice = createSlice({
         state.user = null;
         state.isAuthenticated = false;
       })
+      .addCase(logoutUser.fulfilled, (state, action) => {
 
+        state.isLoading = false;
+        state.user =  null;
+        state.isAuthenticated = false;
+      })
+      
 
       
-      }
-})
+     
+      
+      
+
+      
+     
+        
+    
+  },
+  
+});
 export const { setUser } = authSlice.actions;
 export default authSlice.reducer;

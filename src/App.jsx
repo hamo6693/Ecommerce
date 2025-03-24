@@ -25,7 +25,8 @@ function App() {
 
 
 
-  const { user, isAuthenticated } = useSelector((state) => state.auth) ;
+  const { user, isAuthenticated } = useSelector(
+    (state) => state.auth) ;
   console.log(isAuthenticated);
   
 
@@ -47,7 +48,7 @@ function App() {
             </Route>
 
 
-            <Route path='admin' element={<CheckAuth isAuthenticated={isAuthenticated} user={user}> 
+            <Route path='/admin' element={<CheckAuth isAuthenticated={isAuthenticated} user={user}> 
               <AdminLayout/>
             </CheckAuth>}>
 
@@ -57,7 +58,9 @@ function App() {
             </Route>
 
 
-            <Route path='/shop' element={<CheckAuth isAuthenticated={isAuthenticated} user={user}>
+            <Route path='/shop'
+             element={
+             <CheckAuth isAuthenticated={isAuthenticated} user={user}>
               <ShoppingLayput/>
             </CheckAuth>}>
 

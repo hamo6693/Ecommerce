@@ -16,7 +16,8 @@ function CommonForm({
   setFormData,
   onSumbit,
   buttonText,
-  isBtnDisabled,
+  isButtonDisapled
+
 }) 
 
 {
@@ -117,7 +118,7 @@ function CommonForm({
           </div>
         ))}
       </div>
-      <Button disabled={isBtnDisabled}  type="submit" className="mt-2 w-full">
+      <Button disabled={isButtonDisapled}  type="submit" className="mt-2 w-full">
       {buttonText || "Submit"}
       </Button>
     </form>

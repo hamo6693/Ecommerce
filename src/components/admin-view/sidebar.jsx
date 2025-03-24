@@ -1,9 +1,13 @@
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
-import { BadgeCheck, LayoutDashboard, ShoppingBasket,ChartNoAxesCombined,Icon, Sheet  } from "lucide-react";
+import { BadgeCheck, LayoutDashboard, ShoppingBasket,ChartNoAxesCombined,Icon  } from "lucide-react";
 
-
-
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet"
 
  const adminSidebarMenuItems = [
     {
@@ -27,11 +31,15 @@ import { BadgeCheck, LayoutDashboard, ShoppingBasket,ChartNoAxesCombined,Icon, S
   ]
 
 
-function MenuItems(){
+function MenuItems({setOpen}){
     const navigate = useNavigate()
 
     return <nav className="mt-8 flex-col flex gap-2"> 
-    {adminSidebarMenuItems.map(menuItem => <div key={menuItem.path} className="flex items-center gap-2 rounded-md py-2 px-3 cursor-pointer" onClick={() => navigate(menuItem.path)}>
+    {adminSidebarMenuItems.map(menuItem => <div key={menuItem.path} className="flex items-center gap-2 rounded-md py-2 px-3 cursor-pointer" 
+    onClick={() => {navigate(menuItem.path)
+      setOpen ?  setOpen(false):null
+
+    }}>
             {menuItem.Icon}
             <span>{menuItem.label}</span>
         </div>)
@@ -42,13 +50,25 @@ function MenuItems(){
 
 
 function AdminSidebar({open,setOpen}) {
-
-    const navigate = useNavigate()
-
   
+    const navigate = useNavigate()
     return ( 
         <Fragment>
-            <Sheet open={open} onOpen>
+            <Sheet open={open} onOpenChange={setOpen}>
+              <SheetContent side="left" className="w-64 ">
+                <div className="flex flex-col h-full">
+                  <SheetHeader className="border-b">
+                    <SheetTitle className="flex gap-2 mt-5" >
+                    <ChartNoAxesCombined size={30}/>
+
+                      <span className="text-2xl font-extrabold">Admin panel</span>
+
+                    </SheetTitle>
+                  </SheetHeader>
+                  <MenuItems setOpen={setOpen}/>
+                </div>
+
+              </SheetContent>
 
             </Sheet>
             <aside className="hidden w-64 flex-col border-r bg-background p-6 lg:flex">
