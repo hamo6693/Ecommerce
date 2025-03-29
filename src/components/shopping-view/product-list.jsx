@@ -10,7 +10,7 @@ function ShoppingProductsList({product,handleGetProductDeatils,handleAddToCart})
             <div onClick={() => handleGetProductDeatils(product?._id)}>
             <div className="relative">
                 <img 
-                src={product.image} 
+                src={product.image}  
                 alt={product.alt} 
                 className="w-full h-[300px] object-cover rounded-t-lg" />
                 {product.salePrice > 0 ? 

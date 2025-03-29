@@ -23,12 +23,13 @@ const initialAddressFormData = {
   phone: "",
   notes: "",
 };
-function Address() {
+function Address({setCurrentSelectAddress}) {
   const [formData, setFormData] = useState(initialAddressFormData);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { addressList } = useSelector((state) => state.shopAddress);
   const [getCurrentEditId, setGetCurrentEditId] = useState(null);
+
 
   function handleMangeAddress(event) {
     event.preventDefault();
@@ -42,8 +43,10 @@ function Address() {
     })
 ).then((data) => {
     console.log(data);
-    
         if(data?.payload?.success){
+         
+    
+
             dispatch(getAddress(user?.id))
             setGetCurrentEditId(null)
             setFormData(initialAddressFormData)
@@ -102,13 +105,14 @@ function Address() {
 
   return (
     <Card>
-      <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
+      <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2    gap-2">
         {addressList && addressList.length > 0
           ? addressList.map((addresItem) => (
               <AddressCard
                 handleDeletAddress={handleDeletAddress}
                 handleEditAddress={handleEditAddress}
                 addressInfo={addresItem}
+                setCurrentSelectAddress={setCurrentSelectAddress}
               />
             ))
           : null}

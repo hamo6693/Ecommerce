@@ -4,6 +4,7 @@ import { loginUser } from "@/srore/auth-slice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { useToast } from "../../hooks/use-toast";
 
 
 const initialState = {
@@ -15,13 +16,18 @@ function AuthLogin() {
     const [formData, setFormData] = useState(initialState);
 
    
-     
+     const {toast} = useToast()
     const dispatch = useDispatch()
     
 
     function onSubmitt (event)  {
       event.preventDefault()
       dispatch(loginUser(formData)).then(res => {
+        if(payload?.data) {
+          toast({
+            title:"ol"
+          })
+        }
         console.log(res);
         
       })    

@@ -19,6 +19,8 @@ import AuthRegister from './pages/auth/register';
 import {  useDispatch, useSelector } from 'react-redux';
 import { checkAuth } from './srore/auth-slice';
 import { useEffect } from 'react';
+import PaypalReturnPage from './pages/shopping-view/paypal-return';
+import PaymentSuccessPage from './pages/shopping-view/payment-success';
 
 function App() {
   const dispatch = useDispatch();
@@ -69,6 +71,13 @@ function App() {
             <Route path='checkout' element={<ShoppingCheckOut/>}/>
             <Route path='account' element={<ShoppingAccount/>}/>
 
+            <Route path='paypal-return' element={<PaypalReturnPage />}/>
+            <Route path='paypal-success' element={<PaymentSuccessPage />}/>
+            
+
+                        
+
+           
             </Route>
 
 
