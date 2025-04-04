@@ -6,6 +6,7 @@ import { Button } from "../../components/ui/button";
 import { useState } from "react";
 import { createNewOrder } from "../../srore/shop/orders-slice";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../../hooks/use-toast";
 
 
 
@@ -19,9 +20,30 @@ function ShoppingCheckOut() {
     const navigate = useNavigate()
     const [isPaymentStart,setIsPaymentStart] = useState(false)
     const dispatch = useDispatch()
+    const {toast} = useToast()
+
+    
 
 
     function handlePaypalPayment(){
+        
+        
+        if (cartItems.length === 0) {
+            toast({
+              title: "Your cart is empty. Please add items to proceed",
+              variant: "destructive",
+            });
+            return;
+        }
+        if (currentSelectAddress === null) {
+            toast({
+              title: "Please select one address to proceed.",
+              variant: "destructive",
+            });
+      
+            return;
+          }
+
         const orderData = {
             userId:user?.id,
             cartId:cartItems?._id,
@@ -84,10 +106,7 @@ console.log(currentSelectAddress,"currentSelectAddress");
           0  )
       : 0;
 
-      if(cartItems.length === 0) {
-        alert("chice")
-        return
-      }
+      
 
 
     
@@ -98,7 +117,7 @@ console.log(currentSelectAddress,"currentSelectAddress");
                 <img src={accImg} className="h-full w-full object-cover object-center"/>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5">
-                <Address setCurrentSelectAddress={setCurrentSelectAddress} />
+                <Address currentSelectAddress={currentSelectAddress} setCurrentSelectAddress={setCurrentSelectAddress} />
                 <div className="flex flex-col gap-4">
                     {
                         cartItems && cartItems.items && cartItems.items.length  > 0 

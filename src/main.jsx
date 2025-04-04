@@ -6,14 +6,14 @@ import {Provider} from "react-redux";
 
 import store from './srore/srore';
 //import { Toaster } from "./components/ui/toaster.js"
-import Toaster  from "./components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster"
 
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
   <Provider store={store}>
   <App />
-
+  <Toaster/>
   </Provider>
   </BrowserRouter>
  

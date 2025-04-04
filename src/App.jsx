@@ -21,6 +21,7 @@ import { checkAuth } from './srore/auth-slice';
 import { useEffect } from 'react';
 import PaypalReturnPage from './pages/shopping-view/paypal-return';
 import PaymentSuccessPage from './pages/shopping-view/payment-success';
+import Search from './pages/shopping-view/search';
 
 function App() {
   const dispatch = useDispatch();
@@ -73,6 +74,8 @@ function App() {
 
             <Route path='paypal-return' element={<PaypalReturnPage />}/>
             <Route path='paypal-success' element={<PaymentSuccessPage />}/>
+            <Route path='search' element={<Search />}/>
+
             
 
                         

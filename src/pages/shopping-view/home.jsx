@@ -25,6 +25,9 @@ import { filterAllProducts, getProductDetails } from "../../srore/shop/products-
 import ShoppingProductsList from "../../components/shopping-view/product-list";
 import { useNavigate } from "react-router-dom";
 import { addToCart, getMyCart } from "../../srore/shop/cart-slice";
+import { useToast } from "../../hooks/use-toast";
+import { getFeatureImages } from "../../srore/common-slice";
+
 
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -48,6 +51,10 @@ function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const {user} = useSelector((state) => state.auth)
   const { productList } = useSelector((state) => state.shopProducts);
+  const { featureImageList } = useSelector((state) => state.commonFeature);
+
+       const {toast} = useToast()
+  
   const Navigate = useNavigate();
   const dispatch = useDispatch();
  
@@ -70,11 +77,19 @@ function ShoppingHome() {
     function handleAddToCart(getCurrentProductId){
         dispatch(addToCart({userId: user?.id, productId:getCurrentProductId,quantity:1})
       ).then((data) => {
-        console.log(data);
-        
-        if(data?.payload?.success){
+        if (data?.payload?.success) {
+          toast({
+            title: "Product is added to cart",
+          });
           dispatch(getMyCart(user?.id));
+
+        } else {
+          
+          toast({
+            title: data?.payload?.message,
+          });
         }
+       
       })
     }
 
@@ -91,18 +106,23 @@ function ShoppingHome() {
     );
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getFeatureImages());
+  }, [dispatch]);
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative w-full h-[600px] overflow-hidden">
-        {slides.map((slide, index) => (
+        {featureImageList && featureImageList.length > 0 ?
+         featureImageList.map((slide, index) => (
           <img
-            src={slide}
+            src={slide?.image}
             key={index}
             className={` ${
               index === currentSlide ? "opacity-100" : "opacity-0"
-            }  absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
+            }  absolute top-0 left-0 w-full object-cover transition-opacity duration-1000 `}
           />
-        ))}
+        )):null}
         <Button
           variant="outline"
           size="icon"
@@ -134,9 +154,10 @@ function ShoppingHome() {
           <h2 className="text-3xl font-bold text-center mb-8">
             Shop by category
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" >
             {categoriesWithIcon.map((categoryItem) => (
               <Card
+              
                 onClick={() =>
                   handleNavigateToListingPage(categoryItem, "category")
                 }

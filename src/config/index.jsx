@@ -101,6 +101,8 @@ export const addProductFormElements = [
     componentType: "input",
   },
 ];
+
+//menu header
 export const shoppingViewHeaderMenuItems = [
   {
     id: "home",
@@ -108,7 +110,12 @@ export const shoppingViewHeaderMenuItems = [
     path: "/shop/home",
   },
   {
-    id: "man",
+    id: "products",
+    label: "Products",
+    path: "/shop/listing",
+  },
+  {
+    id: "men",
     label: "Men",
     path: "/shop/listing",
   },
@@ -131,6 +138,11 @@ export const shoppingViewHeaderMenuItems = [
     id: "footwear",
     label: "Footwear",
     path: "/shop/listing",
+  },
+  {
+    id: "search",
+    label: "Search",
+    path: "/shop/search",
   },
 ];
 
@@ -160,7 +172,7 @@ export const sortOptions = [
 ];
 
 export const categoryOptionMap = {
-  men: "Man",
+  men: "Men",
   women: "Women",
   kids: "Kids",
   accessories: "Accessories",

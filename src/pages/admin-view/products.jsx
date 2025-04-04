@@ -8,8 +8,8 @@ import ProductImageUpload from "./image-upload";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct, deleteProducts, editProducts, getAllProducts } from "../../srore/admin/products-slice";
 import AdminProductList from "./product-list";
-//import { toast } from "../../components/ui/sonner"
-//import { Toaster, toast } from 'sonner';
+import { useToast } from "../../hooks/use-toast";
+
 
 
 function AdminProducts() {
@@ -31,7 +31,8 @@ function AdminProducts() {
     const [imageFile,setImageFile] = useState(null)
     const [uploadImageUrl,setUploadImageUrl] = useState("");
     const {productList} = useSelector((state) => state.adminProducts)
-    console.log(productList)
+         const {toast} = useToast()
+    
     const dispatch = useDispatch()
     const [imageLoadingState,setImageLoadingState] = useState(false)
     const [currentEditId,setCurrentEditId] = useState(null)
@@ -59,9 +60,11 @@ function AdminProducts() {
             ...formData,
             image:uploadImageUrl
         })).then((data)=> {
-            console.log(data)
 
             if(data?.payload?.success){
+                toast({
+                    title: "Product add successfully",
+                  });
                 dispatch(getAllProducts())
                 setOpenCreateProductDialog(false)
                 setImageFile(null)

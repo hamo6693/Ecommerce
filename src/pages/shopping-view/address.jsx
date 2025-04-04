@@ -15,6 +15,8 @@ import {
   updateAddress,
 } from "../../srore/shop/address-slice";
 import AddressCard from "../../components/shopping-view/address-card";
+import { useToast } from "../../hooks/use-toast";
+
 
 const initialAddressFormData = {
   address: "",
@@ -23,16 +25,27 @@ const initialAddressFormData = {
   phone: "",
   notes: "",
 };
-function Address({setCurrentSelectAddress}) {
+function Address({setCurrentSelectAddress,currentSelectAddress}) {
   const [formData, setFormData] = useState(initialAddressFormData);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { addressList } = useSelector((state) => state.shopAddress);
+  const { toast } = useToast();
+
   const [getCurrentEditId, setGetCurrentEditId] = useState(null);
 
 
   function handleMangeAddress(event) {
     event.preventDefault();
+    if (addressList.length >= 2 && getCurrentEditId === null) {
+      setFormData(initialAddressFormData);
+      toast({
+        title: "You can add max 2 addresses",
+        variant: "destructive",
+      });
+
+      return;
+    }
 
     getCurrentEditId !== null ? 
     dispatch(
@@ -50,6 +63,9 @@ function Address({setCurrentSelectAddress}) {
             dispatch(getAddress(user?.id))
             setGetCurrentEditId(null)
             setFormData(initialAddressFormData)
+            toast({
+              title: "Address updated successfully",
+            });
         }
     }):
     
@@ -63,6 +79,9 @@ function Address({setCurrentSelectAddress}) {
       if (data?.payload?.success) {
         dispatch(getAddress(user?.id));
         setFormData(initialAddressFormData);
+        toast({
+          title: "Address added successfully",
+        });
       }
     });
   }
@@ -87,6 +106,9 @@ function Address({setCurrentSelectAddress}) {
       console.log(data);
       if (data?.payload?.success) {
         dispatch(getAddress(user?.id));
+        toast({
+          title: "Address deleted successfully",
+        });
       }
     });
   }
@@ -112,6 +134,7 @@ function Address({setCurrentSelectAddress}) {
                 handleDeletAddress={handleDeletAddress}
                 handleEditAddress={handleEditAddress}
                 addressInfo={addresItem}
+                currentSelectAddress={currentSelectAddress}
                 setCurrentSelectAddress={setCurrentSelectAddress}
               />
             ))

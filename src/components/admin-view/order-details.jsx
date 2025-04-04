@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { Badge } from "../ui/badge";
 import { getAllOrdersForAdmin, getOrderDetailsForAdmin, updateOrderStatus } from "../../srore/admin/orders-slice";
+import { useToast } from "../../hooks/use-toast";
 
 const initialFormData = {
     status: "",
@@ -16,6 +17,8 @@ function AdminOrderDetailsView({orderDetails}) {
   const [formData, setFormData] = useState(initialFormData);
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch()
+    const {toast} = useToast()
+
 
 
 
@@ -26,12 +29,14 @@ function AdminOrderDetailsView({orderDetails}) {
     dispatch(
         updateOrderStatus({id:orderDetails?._id, orderStatus:status})).then(data => {
         if(data?.payload?.success){
-            console.log(data);
 
             dispatch(getOrderDetailsForAdmin(orderDetails?._id))
             dispatch(getAllOrdersForAdmin());
 
             setFormData(initialFormData)
+            toast({
+              title: data?.payload?.message,
+            });
         }
         
     })

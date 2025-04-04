@@ -23,7 +23,7 @@ function ProductFilter({filters,handleFilters}) {
                     checked={
                         filters&& Object.keys(filters).length > 0 && filters[keyItem] && filters[keyItem].indexOf(option.id) > -1
                     }
-                    onCheckedChange={()=>handleFilters(keyItem,option.id)} />
+                    onCheckedChange={()=> handleFilters(keyItem,option.id)} />
                     {option.label}
                 </Label>)
                 )}

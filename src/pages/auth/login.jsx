@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useToast } from "../../hooks/use-toast";
 
-
 const initialState = {
     email: "",
     password: "",
@@ -15,23 +14,29 @@ const initialState = {
 function AuthLogin() {
     const [formData, setFormData] = useState(initialState);
 
+    
    
      const {toast} = useToast()
     const dispatch = useDispatch()
     
 
     function onSubmitt (event)  {
+    
       event.preventDefault()
-      dispatch(loginUser(formData)).then(res => {
-        if(payload?.data) {
+      dispatch(loginUser(formData)).then((data) => {
+        if (data?.payload?.success) {
           toast({
-            title:"ol"
-          })
+            title: data?.payload?.message,
+          });
+        } else {
+          
+          toast({
+            title: data?.payload?.message,
+          });
         }
-        console.log(res);
-        
-      })    
+      });
     }
+    
 
     return (  
         <div className="mx-auto w-full max-w-md space-y-6">
